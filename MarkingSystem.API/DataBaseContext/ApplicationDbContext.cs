@@ -16,7 +16,7 @@ namespace MarkingSystem.API.DataBaseContext
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         //public DbSet<Booking> Bookings { get; set; }
-        //public DbSet<Course> Courses { get; set; }
+        public DbSet<Course> Courses { get; set; }
         //public DbSet<Enrollment> Enrollments { get; set; }
         //public DbSet<FinalMark> FinalMarks { get; set; }
         //public DbSet<Mark> Marks { get; set; }
