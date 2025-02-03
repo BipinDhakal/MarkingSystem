@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { getCourses } from "./Course/Services/courseService";
-import CourseForm from "./CourseForm";
-import CourseList from "./CourseList";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import { getCourses } from "../Services/courseService";
+import CourseForm from "../Components/CourseForm";
+import CourseList from "../Components/CourseList";
+import { Modal, Button } from "react-bootstrap";
 
 function Course() {
   const [courses, setCourses] = useState([]);
@@ -24,6 +23,8 @@ function Course() {
   };
 
   const handleEdit = (course) => {
+    course.startDate = course.startDate.split("T")[0];
+    course.endDate = course.endDate.split("T")[0];
     setSelectedCourse(course);
     setShow(true);
   };
@@ -35,8 +36,12 @@ function Course() {
 
   return (
     <div>
-      <h2>Course Management</h2>
-      <Button onClick={handleAdd}>Add Course</Button>
+      <h2 className="mb-4">Course Details</h2>
+
+      <div className="d-flex justify-content-end mb-3">
+        <Button onClick={handleAdd}>Add Course</Button>
+      </div>
+
       <CourseList courses={courses} onEdit={handleEdit} refreshCourses={fetchCourses} />
 
       <Modal show={show} onHide={() => setShow(false)}>

@@ -5,25 +5,21 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
 import Login from './Authentication/Login'
 import Register from './Authentication/Register'
-import Dashboard from "./AdminDashboard/Dashboard";
-import Course from "./Course/Course";
+//import Dashboard from "./AdminDashboard/Dashboard";
+import Course from "./Course/Components/Course";
+import { ToastContainer } from 'react-toastify';
 
 function App(){
   return(
-    // <>
-    // <div className="card">
-    //     <Login></Login>
-    //     {/* <Register></Register> */}
-    // </div>
-    // </>
-
     <Router>
       <div className="card">
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           <Route path="/course" element={<Course />} />
         </Routes>
+        <ToastContainer/>
       </div>
     </Router>
 

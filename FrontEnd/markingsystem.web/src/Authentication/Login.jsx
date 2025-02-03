@@ -1,13 +1,10 @@
 import React,{Fragment, useEffect,useState} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-bootstrap/dist/react-bootstrap.min.js';
-import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-import { Row } from "react-bootstrap";
-import { Col } from "react-bootstrap";
+//import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'react-bootstrap/dist/react-bootstrap.min.js';
+import { toast } from "react-toastify";
+//import 'react-toastify/dist/ReactToastify.css';
 
 function Login(){
     const [email, setEmail] = useState("");
@@ -29,24 +26,15 @@ function Login(){
             password: password,
           });
           console.log(response);
-            //console.log(response.data.result.token);
-          //setToken(response.data.result.token)
           const token = response.data.result.token;
           setToken(token);
           localStorage.setItem("authToken", token);
-          toast.success('Logged in Successfully');
-          clear();
-
+          toast.success("Logged in successfully");
+          // toast.success("Logged in Successfully", { autoClose: 3000 });
           //navigate("/dashboard");
           navigate("/course");
-        
-          // alert("Logged in Successfully");
-          //     setEmail("");
-          //     setPassword("");
-         
-          // Load();
         } catch (err) {
-          alert(err);
+          toast.error("Login failed. Please check your credentials.");
         }
       }
 
@@ -86,52 +74,22 @@ function Login(){
                   </button>
                 </div>
                 </form>
+
+                <div className="mt-3">
+          <p>
+            Not registered yet?{" "}
+            <a
+              href="/register"
+              style={{ textDecoration: "underline", color: "blue" }}
+            >
+              Register here
+            </a>
+          </p>
+        </div>
+
             </div>
         </div>
       )
-
-
-
-
-  //   async function userLogin(event){
-  //    event.preventDefault();
-  //       const url = 'https://localhost:7084/api/auth/login';
-  //     const data ={
-  //         "email": email,
-  //         "password" : password
-  //     }
-  //     axios.post(url,data)
-  //     .then((result)=>{
-  //       setToken(result.data.token)
-  //         clear();
-  //         toast.success('Logged in Successfully');
-  //     }).catch((error)=>{
-  //         toast.success(error);
-  //     })
-  //   }
-
-
-
-  // return (
-  //   <Fragment>
-  //     <ToastContainer>
-  //       <Container>
-  //         <Row>
-  //           <Col>
-  //             <input type="text" className="form-control" placeholder="Enter Email" 
-  //                   value={email} onChange={(e)=> setEmail(e.target.value)} />
-  //           </Col>
-  //           <Col>
-  //             <input type="text" className="form-control" placeholder="Enter Password" 
-  //                   value={password} onChange={(e)=> setPassword(e.target.value)} />
-  //           </Col>
-  //         </Row>
-  //       </Container>
-  //     </ToastContainer>
-  //   </Fragment>
-  // )
-
-    
 }
 
 export default Login;
