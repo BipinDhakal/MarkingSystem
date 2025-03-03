@@ -7,28 +7,57 @@ namespace MarkingSystem.API.DataBaseContext
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        //private readonly string _adminRoleId = Guid.NewGuid().ToString();
-        //private readonly string _teacherRoleId = Guid.NewGuid().ToString();
-        //private readonly string _studentRoleId = Guid.NewGuid().ToString();
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
             : base(options)
         {
         }
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        //public DbSet<Booking> Bookings { get; set; }
         public DbSet<Course> Courses { get; set; }
-        //public DbSet<Enrollment> Enrollments { get; set; }
-        //public DbSet<FinalMark> FinalMarks { get; set; }
-        //public DbSet<Mark> Marks { get; set; }
-        //public DbSet<Rubric> Rubrics { get; set; }
+        public DbSet<Rubric> Rubrics { get; set; }
+        public DbSet<RubricCriteria> RubricCriteria { get; set; }
+        public DbSet<TimeSlot> TimeSlots { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<PeerAssignment> PeerAssignments { get; set; }
+        public DbSet<PeerMark> PeerMarks { get; set; }
+        public DbSet<TeacherMark> TeacherMarks { get; set; }
+        public DbSet<FinalMark> FinalMarks { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
-        public DbSet<Student> Students { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             this.SeedRoles(modelBuilder);
+
+            //modelBuilder.Entity<Booking>()
+            //.HasIndex(b => new { b.SlotId, b.StudentId })
+            //.IsUnique();
+
+            //modelBuilder.Entity<PeerAssignment>()
+            //    .HasIndex(pa => new { pa.StudentId, pa.PeerId, pa.SlotId })
+            //    .IsUnique();
+
+            modelBuilder.Entity<PeerAssignment>()
+        .HasOne(pa => pa.Student)  // Student (the student doing the marking)
+        .WithMany(u => u.PeerAssignments)  // ApplicationUser has many PeerAssignments
+        .HasForeignKey(pa => pa.StudentId)  // Foreign key in PeerAssignment to ApplicationUser
+        .OnDelete(DeleteBehavior.Cascade);  // Optional, specify cascade delete behavior if needed
+
+            modelBuilder.Entity<PeerAssignment>()
+                .HasOne(pa => pa.Peer)  // Peer (the student being marked)
+                .WithMany()  // Peer does not have navigation property to PeerAssignments (inverse side)
+                .HasForeignKey(pa => pa.PeerId)  // Foreign key to ApplicationUser
+                .OnDelete(DeleteBehavior.Restrict);  // Optional, specify delete behavior for Peer
+
+            modelBuilder.Entity<PeerMark>()
+        .HasOne(pm => pm.RubricCriteria)  // Reference to RubricCriteria
+        .WithMany()  // RubricCriteria does not have navigation to PeerMarks
+        .HasForeignKey(pm => pm.RubricCriteriaId)  // Foreign key in PeerMarks
+        .OnDelete(DeleteBehavior.Restrict);  // Prevent cascading deletes
+
         }
+
+
 
         private void SeedRoles(ModelBuilder builder)
         {

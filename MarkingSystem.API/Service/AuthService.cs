@@ -2,6 +2,7 @@
 using MarkingSystem.API.Models.Dto;
 using MarkingSystem.API.Models.Entity;
 using MarkingSystem.API.Service.IService;
+using MarkingSystem.API.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,19 +15,23 @@ namespace MarkingSystem.API.Service
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        private readonly UserContextHelper _userContextHelper;
 
         public AuthService(ApplicationDbContext db, IJwtTokenGenerator jwtTokenGenerator,
-            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager
+            , UserContextHelper userContextHelper)
         {
             _db = db;
             _jwtTokenGenerator = jwtTokenGenerator;
             _userManager = userManager;
             _roleManager = roleManager;
+            _userContextHelper = userContextHelper;
         }
 
         public async Task<bool> AssignRole(string email, string roleName)
         {
-            var user = _db.ApplicationUsers.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
+            //var user = _db.ApplicationUsers.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
+            var user = await _userManager.FindByEmailAsync(email);
             if (user != null)
             {
                 if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
@@ -42,7 +47,8 @@ namespace MarkingSystem.API.Service
 
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
-            var user = _db.ApplicationUsers.FirstOrDefault(u => u.Email.ToLower() == loginRequestDto.Email.ToLower());
+            //var user = _db.ApplicationUsers.FirstOrDefault(u => u.Email.ToLower() == loginRequestDto.Email.ToLower());
+            var user = await _userManager.FindByEmailAsync(loginRequestDto.Email);
 
             bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
 
@@ -80,6 +86,7 @@ namespace MarkingSystem.API.Service
                 NormalizedEmail = registrationRequestDto.Email.ToUpper(),
                 EmailConfirmed = true,
                 UserId = newUserId,
+                FullName = registrationRequestDto.FullName,
             };
             try
             {
@@ -87,7 +94,8 @@ namespace MarkingSystem.API.Service
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, registrationRequestDto.Role);
-                    var userToReturn = _db.ApplicationUsers.First(u => u.UserName == registrationRequestDto.UserName);
+                    //var userToReturn = _db.ApplicationUsers.First(u => u.UserName == registrationRequestDto.UserName);
+                    var userToReturn = await _userManager.FindByNameAsync(registrationRequestDto.UserName);
 
                     UserDto userDto = new()
                     {

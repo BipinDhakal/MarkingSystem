@@ -3,26 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MarkingSystem.API.Models.Entity
 {
-    public class Rubric
+    public class Rubric : Common
     {
         [Key]
         public int RubricId { get; set; }
-
-        [Required]
-        [ForeignKey("CourseId")]
+        public string RubricName { get; set; }
         public int CourseId{ get; set; }
 
-        [Required]
-        [MaxLength(255)]
-        public string Criteria { get; set; }
-
-        [Required]
-        public int MaxScore { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
-
         public Course Course { get; set; }
+
+        public ICollection<RubricCriteria> Criteria { get; set; }
     }
 }

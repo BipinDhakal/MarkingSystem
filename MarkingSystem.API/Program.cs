@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MarkingSystem.API.Utilities;
+using MarkingSystem.API.Models.Dto;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,8 +84,13 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Register Services
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ICourseService, CourseService>();
+//builder.Services.AddScoped<ICourseService, CourseService>();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<UserContextHelper>();
+
+builder.Services.AddScoped<IGenericService<CourseDto>, GenericService<CourseDto, Course>>();
+builder.Services.AddScoped<IGenericService<RubricDto>, GenericService<RubricDto, Rubric>>();
 //Cors
 builder.Services.AddCors(options =>
 {

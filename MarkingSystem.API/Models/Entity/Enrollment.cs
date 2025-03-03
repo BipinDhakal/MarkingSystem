@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MarkingSystem.API.Models.Entity
 {
-    public class Enrollment
+    public class Enrollment : Common
     {
         [Key]
         public int EnrollmentId { get; set; }

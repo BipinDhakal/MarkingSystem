@@ -3,28 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MarkingSystem.API.Models.Entity
 {
-    public class FinalMark
+    public class FinalMark : Common
     {
         [Key]
         public int FinalMarkId { get; set; }
-
-        [Required]
-        [ForeignKey("UserId")]
-        public int StudentId { get; set; }
-
-        [Required]
-        [ForeignKey("CourseId")]
-        public int CourseId { get; set; }
-
-        public float PeerScore { get; set; }
-
-        public float TeacherScore { get; set; }
-
-        public float FinalScore { get; set; }
-
-        public DateTime CalculatedAt { get; set; } = DateTime.Now;
+        public string StudentId { get; set; }
+        public double PeerMarks { get; set; }  // Weighted (Max 4 points)
+        public double TeacherMarks { get; set; }  // Weighted (Max 6 points)
+        //public double FinalScore { get; set; }  // 40% Peer, 60% Teacher
+        public double FinalScore
+        {
+            get { return (PeerMarks * 0.4) + (TeacherMarks * 0.6); }
+        }
 
         public ApplicationUser Student { get; set; }
-        public Course Course { get; set; }
     }
 }

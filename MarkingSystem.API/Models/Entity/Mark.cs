@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MarkingSystem.API.Models.Entity
 {
-    public class Mark
+    public class Mark : Common
     {
         [Key]
         public int MarkId { get; set; }

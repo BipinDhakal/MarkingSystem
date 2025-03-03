@@ -1,0 +1,16 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MarkingSystem.API.Models.Entity
+{
+    public class TimeSlot : Common
+    {
+        [Key]
+        public int TimeSlotId { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public bool IsClosed { get; set; }
+        public int MaxStudents { get; set; } = 8;
+
+        public ICollection<Booking> Bookings { get; set; }
+    }
+}
