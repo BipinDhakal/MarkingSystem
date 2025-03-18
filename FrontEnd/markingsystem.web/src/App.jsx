@@ -1,26 +1,68 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import './App.css'
 import Login from './Authentication/Login'
 import Register from './Authentication/Register'
 //import Dashboard from "./AdminDashboard/Dashboard";
 import Course from "./Course/Components/Course";
 import { ToastContainer } from 'react-toastify';
+import Rubric from './Rubric/Components/Rubric';
+import RubricCriteria from './RubricCriteria/Components/RubricCriteria';
+
+// import Header from './AdminDashboard/Header';
+// import Footer from './AdminDashboard/Footer';
+// import Home from './AdminDashboard/Home';
+// import SideNav from './AdminDashboard/SideNav';
+import Dashboard from './AdminDashboard/Dashboard';
+import NavMenu from './AdminDashboard/NavMenu';
+
+
+function PrivateRoute({ element }) {
+  return localStorage.getItem('isAuthenticated') === 'true' ? element : <Navigate to="/" />;
+}
 
 function App(){
   return(
     <Router>
-      <div className="card">
-        <Routes>
+
+<div className="d-flex">
+       
+        <div className="sidebar">
+          <NavMenu />
+        </div>
+
+        
+        <div className="content-area">
+          <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-          <Route path="/course" element={<Course />} />
-        </Routes>
-        <ToastContainer/>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/course" element={<Course />} />
+            <Route path="/rubric" element={<Rubric />} />
+            <Route path="/rubriccriteria" element={<RubricCriteria />} />
+          </Routes>
+        </div>
       </div>
+
+
+
+
+      {/* <div className="card"> */}
+        {/* <Routes>        
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} /> */}
+ {/* Protecting the Dashboard route */}
+ {/* <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} /> */}
+          {/* <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/course" element={<Course />} />
+          <Route path="/rubric" element={<Rubric />} />
+          <Route path="/rubriccriteria" element={<RubricCriteria />} />
+        </Routes> */}
+        <ToastContainer/>
+      {/* </div> */}
     </Router>
 
   )

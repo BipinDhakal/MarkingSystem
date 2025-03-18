@@ -85,12 +85,14 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 //builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IUtilityService, UtilityService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<UserContextHelper>();
 
 builder.Services.AddScoped<IGenericService<CourseDto>, GenericService<CourseDto, Course>>();
 builder.Services.AddScoped<IGenericService<RubricDto>, GenericService<RubricDto, Rubric>>();
+builder.Services.AddScoped<IGenericService<RubricCriteriaDto>, GenericService<RubricCriteriaDto, RubricCriteria>>();
 //Cors
 builder.Services.AddCors(options =>
 {

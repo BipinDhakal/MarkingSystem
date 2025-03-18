@@ -41,6 +41,7 @@ function CourseList({ courses, onEdit, refreshCourses }) {
           <tr>
             <th>#</th>
             <th>Name</th>
+            <th>Code</th>
             <th>Description</th>
             <th>Start Date</th>
             <th>End Date</th>
@@ -53,6 +54,7 @@ function CourseList({ courses, onEdit, refreshCourses }) {
               <tr key={course.courseId}>
                 <td>{index + 1}</td>
                 <td>{course.courseName}</td>
+                <td>{course.courseCode}</td>
                 <td>{course.description}</td>
                 <td>{new Date(course.startDate).toLocaleDateString()}</td>
                 <td>{new Date(course.endDate).toLocaleDateString()}</td>

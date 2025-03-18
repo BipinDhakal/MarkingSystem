@@ -31,8 +31,8 @@ function Login(){
           localStorage.setItem("authToken", token);
           toast.success("Logged in successfully");
           // toast.success("Logged in Successfully", { autoClose: 3000 });
-          //navigate("/dashboard");
-          navigate("/course");
+          navigate("/dashboard");
+          //navigate("/course");
         } catch (err) {
           toast.error("Login failed. Please check your credentials.");
         }

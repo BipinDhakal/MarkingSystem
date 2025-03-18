@@ -67,7 +67,7 @@ namespace MarkingSystem.API.Controllers
             return Ok(_response);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> Update([FromBody] TDto dto)
         {
             try

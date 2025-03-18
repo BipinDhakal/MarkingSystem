@@ -35,7 +35,7 @@ function Course() {
   };
 
   return (
-    <div>
+    <div className="bg-white p-4 rounded shadow mt-4">
       <h2 className="mb-4">Course Details</h2>
 
       <div className="d-flex justify-content-end mb-3">
