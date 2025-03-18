@@ -1,89 +1,93 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import './App.css'
-import Login from './Authentication/Login'
-import Register from './Authentication/Register'
-//import Dashboard from "./AdminDashboard/Dashboard";
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import "./App.css";
+import Login from "./Authentication/Login";
+import Register from "./Authentication/Register";
 import Course from "./Course/Components/Course";
-import { ToastContainer } from 'react-toastify';
-import Rubric from './Rubric/Components/Rubric';
-import RubricCriteria from './RubricCriteria/Components/RubricCriteria';
-
-// import Header from './AdminDashboard/Header';
-// import Footer from './AdminDashboard/Footer';
-// import Home from './AdminDashboard/Home';
-// import SideNav from './AdminDashboard/SideNav';
-import Dashboard from './AdminDashboard/Dashboard';
-import NavMenu from './AdminDashboard/NavMenu';
+import { ToastContainer } from "react-toastify";
+import Rubric from "./Rubric/Components/Rubric";
+import RubricCriteria from "./RubricCriteria/Components/RubricCriteria";
+import Dashboard from "./AdminDashboard/Dashboard";
+import NavMenu from "./AdminDashboard/NavMenu";
 
 
 function PrivateRoute({ element }) {
-  return localStorage.getItem('isAuthenticated') === 'true' ? element : <Navigate to="/" />;
+  const authToken = localStorage.getItem("authToken");
+
+  if (!authToken) {
+    return <Navigate to="/" />; 
+  }
+
+  return element; 
 }
 
-function App(){
-  return(
-    <Router>
 
-<div className="d-flex">
-       
+
+const Layout = () => {
+  const location = useLocation();
+  const hideNavMenu = location.pathname === "/" || location.pathname === "/register";
+
+  return (
+    <div className="d-flex">
+      {!hideNavMenu && (
         <div className="sidebar">
           <NavMenu />
         </div>
+      )}
 
-        
-        <div className="content-area">
-          <Routes>
+      <div className="content-area" style={{ marginLeft: hideNavMenu ? "0" : "250px", flex: 1 }}>
+        <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/course" element={<Course />} />
-            <Route path="/rubric" element={<Rubric />} />
-            <Route path="/rubriccriteria" element={<RubricCriteria />} />
-          </Routes>
-        </div>
+          <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+          <Route path="/course" element={<PrivateRoute element={<Course />} />} />
+          <Route path="/rubric" element={<PrivateRoute element={<Rubric />} />} />
+          <Route path="/rubriccriteria" element={<PrivateRoute element={<RubricCriteria />} />} />
+        </Routes>
       </div>
+    </div>
+  );
+};
 
+function App() {
+  return (
+    // <Router>
+    //   <div className="d-flex">
+    //     <div className="sidebar">
+    //       <NavMenu />
+    //     </div>
+    //     <div className="content-area">
+    //       <Routes>
+    //         <Route path="/" element={<Login />} />
+    //         <Route path="/register" element={<Register />} />
+    //         <Route path="/dashboard" element={<Dashboard />} />
+    //         <Route path="/course" element={<Course />} />
+    //         <Route path="/rubric" element={<Rubric />} />
+    //         <Route path="/rubriccriteria" element={<RubricCriteria />} />
+    //       </Routes>
+    //     </div>
+    //   </div>
+    //   <ToastContainer />
+    // </Router>
 
-
-
-      {/* <div className="card"> */}
-        {/* <Routes>        
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} /> */}
- {/* Protecting the Dashboard route */}
- {/* <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} /> */}
-          {/* <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/course" element={<Course />} />
-          <Route path="/rubric" element={<Rubric />} />
-          <Route path="/rubriccriteria" element={<RubricCriteria />} />
-        </Routes> */}
-        <ToastContainer/>
-      {/* </div> */}
+    <Router>
+      <Layout />
+      <ToastContainer />
     </Router>
 
-  )
+  );
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+{/* <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} /> */}
 // function App() {
 //   const [count, setCount] = useState(0)
 
@@ -113,4 +117,4 @@ function App(){
 //   )
 // }
 
-export default App
+export default App;

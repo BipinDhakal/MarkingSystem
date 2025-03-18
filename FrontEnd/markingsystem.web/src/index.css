@@ -137,6 +137,9 @@ button:focus-visible {
 .content-area{
   margin-left: 21%;
 }
+.nav-link.active {
+  background-color: #4F46E5; 
+}
 
 @media (prefers-color-scheme: light) {
   :root {
