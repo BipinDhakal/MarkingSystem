@@ -19,10 +19,10 @@ import { Menu, Home, Users, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const data = [
-  { name: "Jan", users: 400 },
-  { name: "Feb", users: 300 },
-  { name: "Mar", users: 500 },
-  { name: "Apr", users: 700 },
+  { name: "Course1", users: 6 },
+  { name: "Course2", users: 7 },
+  { name: "Course3", users: 5 },
+  { name: "Course4", users: 4 },
 ];
 
 function Dashboard() {
@@ -73,27 +73,27 @@ function Dashboard() {
         <div className="row mt-4">
           <div className="col-md-4 mb-4">
             <div className="card p-4">
-              <h5 className="card-title">Total Users</h5>
-              <p className="h4 font-weight-bold">1,245</p>
+              <h5 className="card-title">Total Course</h5>
+              <p className="h4 font-weight-bold">12</p>
             </div>
           </div>
           <div className="col-md-4 mb-4">
             <div className="card p-4">
-              <h5 className="card-title">New Signups</h5>
-              <p className="h4 font-weight-bold">124</p>
+              <h5 className="card-title">Total Teachers</h5>
+              <p className="h4 font-weight-bold">5</p>
             </div>
           </div>
           <div className="col-md-4 mb-4">
             <div className="card p-4">
-              <h5 className="card-title">Revenue</h5>
-              <p className="h4 font-weight-bold">$12,345</p>
+              <h5 className="card-title">Total Rubric</h5>
+              <p className="h4 font-weight-bold">8</p>
             </div>
           </div>
         </div>
 
 {/* Bar Chart */}
         <div className="bg-white p-4 rounded shadow mt-4">
-          <h5 className="mb-4">User Growth</h5>
+          <h5 className="mb-4">Marking By Course</h5>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={data}>
               <XAxis dataKey="name" />

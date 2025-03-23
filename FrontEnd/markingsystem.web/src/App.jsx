@@ -17,6 +17,7 @@ import Rubric from "./Rubric/Components/Rubric";
 import RubricCriteria from "./RubricCriteria/Components/RubricCriteria";
 import Dashboard from "./AdminDashboard/Dashboard";
 import NavMenu from "./AdminDashboard/NavMenu";
+import ChangePassword from "./Authentication/ChangePassword";
 
 
 function PrivateRoute({ element }) {
@@ -48,6 +49,7 @@ const Layout = () => {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+          <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/course" element={<PrivateRoute element={<Course />} />} />
           <Route path="/rubric" element={<PrivateRoute element={<Rubric />} />} />
           <Route path="/rubriccriteria" element={<PrivateRoute element={<RubricCriteria />} />} />

@@ -115,5 +115,19 @@ namespace MarkingSystem.API.Service
             }
             return "Error Encountered";
         }
+
+        public async Task<bool> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            var user = await _userManager.FindByEmailAsync(changePasswordDto.Email);
+            if (user == null)
+            {
+                return false; // User not found
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
+            return result.Succeeded;
+        }
+
+
     }
 }

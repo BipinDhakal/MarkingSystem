@@ -1,10 +1,28 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { Home, Users, Settings } from "lucide-react";
+import { Home, Users, Settings, Book, ClipboardList, List, LogOut, Lock  } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const NavMenu = () => {
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      // Call logout API
+      //await fetch("/api/logout", { method: "POST", credentials: "include" });
+
+      // Clear authentication data (modify as needed)
+      localStorage.removeItem("authToken");
+      sessionStorage.clear();
+      // document.cookie =
+      //   "authToken=; expires=Tue, 25 March 2025 00:00:00 UTC; path=/;";
+
+      // Redirect to login page
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <aside
@@ -23,14 +41,35 @@ const NavMenu = () => {
           <Settings size={18} /> Settings
         </Button>
         <Button variant="link" className="text-white d-flex align-items-center gap-2" onClick={() => navigate("/course")}>
-          <Settings size={18} /> Course
+          <Book size={18} /> Course
         </Button>
         <Button variant="link" className="text-white d-flex align-items-center gap-2" onClick={() => navigate("/rubric")}>
-          <Settings size={18} /> Rubric
+          <ClipboardList size={18} /> Rubric
         </Button>
         <Button variant="link" className="text-white d-flex align-items-center gap-2" onClick={() => navigate("/rubriccriteria")}>
-          <Settings size={18} /> Rubric Criteria
+          <List size={18} /> Rubric Criteria
         </Button>
+
+        <Button
+          variant="link"
+          className="text-white d-flex align-items-center gap-2"
+          onClick={() => navigate("/change-password")}
+        >
+          <Lock size={18} /> Change Password
+        </Button>
+
+        {/* <Button variant="link" className="text-white d-flex align-items-center gap-2" onClick={() => navigate("/")}>
+          <Settings size={18} /> LogOut
+        </Button> */}
+
+<Button
+          variant="link"
+          className="text-white d-flex align-items-center gap-2"
+          onClick={handleLogout}
+        >
+          <LogOut size={18} /> Logout
+        </Button>
+
       </nav>
     </aside>
   );

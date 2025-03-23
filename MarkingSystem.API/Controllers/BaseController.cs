@@ -1,7 +1,9 @@
-﻿using MarkingSystem.API.Models.Dto;
+﻿using Azure;
+using MarkingSystem.API.Models.Dto;
 using MarkingSystem.API.Service.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace MarkingSystem.API.Controllers
 {
@@ -26,13 +28,14 @@ namespace MarkingSystem.API.Controllers
             {
                 var result = await _service.GetAllAsync();
                 _response.Result = result;
+                return Ok(_response);
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.ErrorMessages = new List<string> { ex.Message };
+                return StatusCode((int)HttpStatusCode.InternalServerError, _response);
             }
-            return Ok(_response);
         }
 
         [HttpGet("{id}")]
@@ -41,14 +44,21 @@ namespace MarkingSystem.API.Controllers
             try
             {
                 var result = await _service.GetByIdAsync(id);
+                if (result == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.ErrorMessages = new List<string> { "Record not found" };
+                    return NotFound(_response);
+                }
                 _response.Result = result;
+                return Ok(_response);
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.ErrorMessages = new List<string> { ex.Message };
+                return StatusCode((int)HttpStatusCode.InternalServerError, _response);
             }
-            return Ok(_response);
         }
 
         [HttpPost]
@@ -58,13 +68,14 @@ namespace MarkingSystem.API.Controllers
             {
                 var result = await _service.CreateAsync(dto);
                 _response.Result = result;
+                return CreatedAtAction(nameof(GetById), new { id = result }, _response);
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.ErrorMessages = new List<string> { ex.Message };
+                return BadRequest(_response);
             }
-            return Ok(_response);
         }
 
         [HttpPut]
@@ -73,14 +84,21 @@ namespace MarkingSystem.API.Controllers
             try
             {
                 var result = await _service.UpdateAsync(dto);
+                if (result == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.ErrorMessages = new List<string> { "Update failed" };
+                    return BadRequest(_response);
+                }
                 _response.Result = result;
+                return Ok(_response);
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.ErrorMessages = new List<string> { ex.Message };
+                return StatusCode((int)HttpStatusCode.InternalServerError, _response);
             }
-            return Ok(_response);
         }
 
         [HttpDelete("{id}")]
@@ -89,14 +107,21 @@ namespace MarkingSystem.API.Controllers
             try
             {
                 bool success = await _service.DeleteAsync(id);
+                if (!success)
+                {
+                    _response.IsSuccess = false;
+                    _response.ErrorMessages = new List<string> { "Delete failed" };
+                    return BadRequest(_response);
+                }
                 _response.Result = success;
+                return Ok(_response);
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.ErrorMessages = new List<string> { ex.Message };
+                return StatusCode((int)HttpStatusCode.InternalServerError, _response);
             }
-            return Ok(_response);
         }
     }
 }

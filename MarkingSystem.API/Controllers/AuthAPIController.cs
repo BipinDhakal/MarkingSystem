@@ -1,5 +1,6 @@
 ﻿using MarkingSystem.API.Models.Dto;
 using MarkingSystem.API.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,6 +58,23 @@ namespace MarkingSystem.API.Controllers
                 _response.Message = "Error encountered";
                 return BadRequest(_response);
             }
+            return Ok(_response);
+        }
+
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto model)
+        {
+            var isChanged = await _authService.ChangePassword(model);
+            if (!isChanged)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Password change failed. Please check your old password.";
+                return BadRequest(_response);
+            }
+
+            _response.IsSuccess = true;
+            _response.Message = "Password changed successfully.";
             return Ok(_response);
         }
     }

@@ -4,6 +4,7 @@ using MarkingSystem.API.Service.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace MarkingSystem.API.Controllers
 {
@@ -15,5 +16,12 @@ namespace MarkingSystem.API.Controllers
         public RubricController(IGenericService<RubricDto> service) : base(service)
         {
         }
+
+        [HttpGet("list")]
+        public async Task<IActionResult> GetNewList()
+        {
+            return Ok();
+        }
+
     }
 }
