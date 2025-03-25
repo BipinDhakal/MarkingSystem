@@ -1,77 +1,88 @@
-import React, { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Form, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { changePassword } from "./AuthenticationService";
 
-function ChangePassword() {
-    const [email, setEmail] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
-//   const [error, setError] = useState("");
-//   const [success, setSuccess] = useState("");
-   const [loading, setLoading] = useState(false);
+function ChangePassword({ selectedChangePassword, refreshChangePassword }) {
+  const [passwordChange, setPasswordChange] = useState({
+    email: "",
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "", 
+  });
 
+  useEffect(() => {
+    if (selectedChangePassword) {
+      setPasswordChange(selectedChangePassword);
+    } else {
+      setPasswordChange({
+        email: "",
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "", 
+      });
+    }
+  }, [selectedChangePassword]);
 
+  const handleChange = (e) => {
+    setPasswordChange({ ...passwordChange, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setError("");
-    // setSuccess("");
 
-    if (newPassword !== confirmNewPassword) {
-      //setError("New password and confirmation do not match.");
+    if (passwordChange.newPassword !== passwordChange.confirmPassword) {
       toast.error("New password and confirmation do not match.");
       return;
     }
 
-     setLoading(true);
+    const requestData = {
+      email: passwordChange.email,
+      oldPassword: passwordChange.currentPassword,
+      newPassword: passwordChange.newPassword,
+      confirmPassword: passwordChange.confirmPassword,
+    };
 
     try {
-        const token = localStorage.getItem("authToken");
-      const response = await fetch("https://localhost:7084/api/auth/change-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        credentials: "include",
-        body: JSON.stringify({ currentPassword, newPassword })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        //setSuccess("Password updated successfully.");
-        toast.success("Password updated successfully.");
-        // Optionally, clear the form fields
-        setEmail("");
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmNewPassword("");
+      const response = await changePassword(requestData);
+  
+      if (response.status === 200 && response.data.isSuccess) {
+        toast.success(response.data.message || "Password updated successfully.");
+        setPasswordChange({
+          email: "",
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+        if (typeof refreshChangePassword === "function") {
+          refreshChangePassword();
+        } else {
+          console.warn("refreshChangePassword is not provided or is not a function");
+        }
       } else {
-        //setError(data.message || "Failed to update password.");
-        toast.error("Failed to update password.");
+        throw new Error(response.data.message || "Password update failed.");
       }
     } catch (err) {
-      //setError("An error occurred while updating the password.");
-      toast.error("An error occurred while updating the password.");
+      console.error("Caught an error:", err);
+      console.error("Error Response Data:", err.response?.data);
+  
+      const errorMessage = err.response?.data?.message || "An unexpected error occurred.";
+      toast.error(errorMessage);
     }
 
-     setLoading(false);
   };
 
   return (
     <div className="container mt-5">
       <h2>Change Password</h2>
-      {/* {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">{success}</Alert>} */}
       <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="email" className="mb-3">
+        <Form.Group controlId="email" className="mb-3">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            value={passwordChange.email}
+            onChange={handleChange}
             required
           />
         </Form.Group>
@@ -79,8 +90,9 @@ function ChangePassword() {
           <Form.Label>Current Password</Form.Label>
           <Form.Control
             type="password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
+            name="currentPassword"
+            value={passwordChange.currentPassword}
+            onChange={handleChange}
             required
           />
         </Form.Group>
@@ -88,26 +100,28 @@ function ChangePassword() {
           <Form.Label>New Password</Form.Label>
           <Form.Control
             type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            name="newPassword"
+            value={passwordChange.newPassword}
+            onChange={handleChange}
             required
           />
         </Form.Group>
-        <Form.Group controlId="confirmNewPassword" className="mb-3">
-          <Form.Label>Confirm New Password</Form.Label>
+        <Form.Group controlId="confirmPassword" className="mb-3">
+          <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type="password"
-            value={confirmNewPassword}
-            onChange={(e) => setConfirmNewPassword(e.target.value)}
+            name="confirmPassword" 
+            value={passwordChange.confirmPassword}
+            onChange={handleChange}
             required
           />
         </Form.Group>
-        <Button variant="primary" type="submit" disabled={loading}>
-          {loading ? "Updating..." : "Update Password"}
+        <Button variant="primary" type="submit">
+          Update Password
         </Button>
       </Form>
     </div>
   );
-};
+}
 
 export default ChangePassword;
