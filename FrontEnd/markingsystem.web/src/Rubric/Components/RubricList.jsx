@@ -49,7 +49,8 @@ function RubricList({ rubrics, onEdit, refreshRubrics }) {
               <tr key={rubric.rubricId}>
                 <td>{index + 1}</td>
                 <td>{rubric.rubricName}</td>
-                <td>{rubric.courseId}</td>
+                {/* <td>{rubric.courseId}</td> */}
+                <td>{rubric.courseName}</td>
                 <td>
                   <Button variant="warning" onClick={() => onEdit(rubric)}>Edit</Button>{' '}
                   <Button variant="danger" onClick={() => handleDelete(rubric.rubricId)}>Delete</Button>

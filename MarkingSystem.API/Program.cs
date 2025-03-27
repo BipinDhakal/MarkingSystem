@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MarkingSystem.API.Utilities;
 using MarkingSystem.API.Models.Dto;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,6 +94,7 @@ builder.Services.AddScoped<UserContextHelper>();
 builder.Services.AddScoped<IGenericService<CourseDto>, GenericService<CourseDto, Course>>();
 builder.Services.AddScoped<IGenericService<RubricDto>, GenericService<RubricDto, Rubric>>();
 builder.Services.AddScoped<IGenericService<RubricCriteriaDto>, GenericService<RubricCriteriaDto, RubricCriteria>>();
+builder.Services.AddScoped<IListService, ListService>();
 //Cors
 builder.Services.AddCors(options =>
 {
@@ -112,7 +114,11 @@ builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(option =>
 {
+    // Enable Swagger annotations
+    option.EnableAnnotations();
+
     //option.AddSecurityDefinition(name: JwtBearerDefaults.AuthenticationScheme, securityScheme: new OpenApiSecurityScheme
+    // Swagger security definition for Bearer token
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -121,6 +127,7 @@ builder.Services.AddSwaggerGen(option =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
+    // Security requirement for all operations
     option.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -135,6 +142,14 @@ builder.Services.AddSwaggerGen(option =>
             }, new string[]{}
         }
     });
+    // Swagger Document Info (OpenAPI 3.0)
+    option.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Marking System API",
+        Version = "1.0",
+        Description = "API documentation for the Marking System"
+    });
+    //end
 });
 builder.Services.AddAuthorization();
 

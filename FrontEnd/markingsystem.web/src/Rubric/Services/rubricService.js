@@ -10,7 +10,8 @@ const getAuthHeaders = () => ({
 });
 
 export const getRubric = async () => {
-  const response = await axios.get(API_URL, getAuthHeaders());
+  //const response = await axios.get(API_URL, getAuthHeaders());
+  const response = await axios.get(`${API_URL}/list`, getAuthHeaders());
   return response.data.result;
 };
 

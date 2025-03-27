@@ -51,7 +51,8 @@ function RubricCriteriaList({ rubricsCriteria, onEdit, refreshRubricsCriteria })
                 <td>{index + 1}</td>
                 <td>{rubricCriteria.description}</td>
                 <td>{rubricCriteria.maxScore}</td>
-                <td>{rubricCriteria.rubricId}</td>
+                {/* <td>{rubricCriteria.rubricId}</td> */}
+                <td>{rubricCriteria.rubricName}</td>
                 <td>
                   <Button variant="warning" onClick={() => onEdit(rubricCriteria)}>Edit</Button>{' '}
                   <Button variant="danger" onClick={() => handleDelete(rubricCriteria.rubricCriteriaId)}>Delete</Button>

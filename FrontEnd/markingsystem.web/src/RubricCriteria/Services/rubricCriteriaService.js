@@ -10,7 +10,8 @@ const getAuthHeaders = () => ({
 });
 
 export const getRubricCriteria = async () => {
-  const response = await axios.get(API_URL, getAuthHeaders());
+  //const response = await axios.get(API_URL, getAuthHeaders());
+  const response = await axios.get(`${API_URL}/list`, getAuthHeaders());
   return response.data.result;
 };
 

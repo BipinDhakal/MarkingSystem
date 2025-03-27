@@ -6,5 +6,7 @@
         public string Description { get; set; }
         public int MaxScore { get; set; }
         public int RubricId { get; set; }
+
+        public string? RubricName { get; set; }
     }
 }

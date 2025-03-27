@@ -11,8 +11,19 @@ namespace MarkingSystem.API.MapperConfig
             var mappingConfig = new MapperConfiguration(config =>
             {
                 config.CreateMap<CourseDto, Course>().ReverseMap();
-                config.CreateMap<Rubric, RubricDto>().ReverseMap();
-                config.CreateMap<RubricCriteria, RubricCriteriaDto>().ReverseMap();
+
+                //config.CreateMap<Rubric, RubricDto>().ReverseMap();
+                config.CreateMap<Rubric, RubricDto>()
+                .ForMember(dest => dest.CourseName, opt => opt.MapFrom(src => src.Course.CourseName))
+                .ReverseMap()
+                .ForMember(dest => dest.Course, opt => opt.Ignore());
+
+                //config.CreateMap<RubricCriteria, RubricCriteriaDto>().ReverseMap();
+                config.CreateMap<RubricCriteria, RubricCriteriaDto>()
+                .ForMember(dest => dest.RubricName, opt => opt.MapFrom(src => src.Rubric.RubricName))
+                .ReverseMap()
+                .ForMember(dest => dest.Rubric, opt => opt.Ignore());
+
                 config.CreateMap<TimeSlot, TimeSlotDto>().ReverseMap();
                 config.CreateMap<Booking, BookingDto>().ReverseMap();
                 config.CreateMap<PeerAssignment, PeerAssignmentDto>().ReverseMap();

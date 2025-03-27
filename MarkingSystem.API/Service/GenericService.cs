@@ -48,10 +48,17 @@ namespace MarkingSystem.API.Service
         public async Task<TDto> CreateAsync(TDto dto)
         {
             var entity = _mapper.Map<TEntity>(dto);
-            entity.CreatedBy = await _userContextHelper.GetCurrentUserIdAsync();
-            entity.CreatedDate = DateTime.Now;
-            _dbSet.Add(entity);
-            await _db.SaveChangesAsync();
+            try
+            {
+                entity.CreatedBy = await _userContextHelper.GetCurrentUserIdAsync();
+                entity.CreatedDate = DateTime.Now;
+                _dbSet.Add(entity);
+                await _db.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                ex.ToString();
+            }
             return _mapper.Map<TDto>(entity);
         }
 
