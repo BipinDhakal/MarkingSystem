@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { Home, Users, Settings, Book, ClipboardList, List, LogOut, Lock  } from "lucide-react";
+import { Home, Users, Settings, Book, ClipboardList, List, LogOut, Lock, TimerIcon, TimerReset  } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const NavMenu = () => {
@@ -48,6 +48,12 @@ const NavMenu = () => {
         </Button>
         <Button variant="link" className="text-white d-flex align-items-center gap-2" onClick={() => navigate("/rubriccriteria")}>
           <List size={18} /> Rubric Criteria
+        </Button>
+        <Button variant="link" className="text-white d-flex align-items-center gap-2" onClick={() => navigate("/timeslot")}>
+          <TimerReset size={18} /> Time Slot
+        </Button>
+        <Button variant="link" className="text-white d-flex align-items-center gap-2" onClick={() => navigate("/booking")}>
+          <TimerIcon size={18} /> Booking
         </Button>
 
         <Button

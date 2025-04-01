@@ -40,14 +40,29 @@ function Rubric() {
         <Button onClick={handleAdd}>Add Rubric</Button>
       </div>
 
-      <RubricList rubrics={rubrics} onEdit={handleEdit} refreshRubrics={fetchRubrics} />
+      <RubricList
+        rubrics={rubrics}
+        onEdit={handleEdit}
+        refreshRubrics={fetchRubrics}
+      />
 
-      <Modal show={show} onHide={() => setShow(false)}>
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        backdrop="static"
+        keyboard={false}
+      >
         <Modal.Header closeButton>
-          <Modal.Title>{selectedRubric ? "Edit Rubric" : "Add Rubric"}</Modal.Title>
+          <Modal.Title>
+            {selectedRubric ? "Edit Rubric" : "Add Rubric"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <RubricForm selectedRubric={selectedRubric} refreshRubrics={fetchRubrics} closeModal={() => setShow(false)} />
+          <RubricForm
+            selectedRubric={selectedRubric}
+            refreshRubrics={fetchRubrics}
+            closeModal={() => setShow(false)}
+          />
         </Modal.Body>
       </Modal>
     </div>

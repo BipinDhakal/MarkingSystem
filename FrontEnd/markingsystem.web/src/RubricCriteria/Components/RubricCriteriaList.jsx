@@ -45,7 +45,7 @@ function RubricCriteriaList({ rubricsCriteria, onEdit, refreshRubricsCriteria })
           </tr>
         </thead>
         <tbody>
-          {rubricsCriteria.length > 0 ? (
+          {rubricsCriteria && rubricsCriteria.length > 0 ? (
             rubricsCriteria.map((rubricCriteria, index) => (
               <tr key={rubricCriteria.rubricCriteriaId}>
                 <td>{index + 1}</td>

@@ -44,7 +44,7 @@ function RubricList({ rubrics, onEdit, refreshRubrics }) {
           </tr>
         </thead>
         <tbody>
-          {rubrics.length > 0 ? (
+          {rubrics && rubrics.length > 0 ? (
             rubrics.map((rubric, index) => (
               <tr key={rubric.rubricId}>
                 <td>{index + 1}</td>

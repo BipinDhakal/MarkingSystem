@@ -42,14 +42,29 @@ function Course() {
         <Button onClick={handleAdd}>Add Course</Button>
       </div>
 
-      <CourseList courses={courses} onEdit={handleEdit} refreshCourses={fetchCourses} />
+      <CourseList
+        courses={courses}
+        onEdit={handleEdit}
+        refreshCourses={fetchCourses}
+      />
 
-      <Modal show={show} onHide={() => setShow(false)}>
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        backdrop="static" // Prevents closing when clicking outside
+        keyboard={false} // Optionally disable closing on pressing the escape key
+      >
         <Modal.Header closeButton>
-          <Modal.Title>{selectedCourse ? "Edit Course" : "Add Course"}</Modal.Title>
+          <Modal.Title>
+            {selectedCourse ? "Edit Course" : "Add Course"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <CourseForm selectedCourse={selectedCourse} refreshCourses={fetchCourses} closeModal={() => setShow(false)} />
+          <CourseForm
+            selectedCourse={selectedCourse}
+            refreshCourses={fetchCourses}
+            closeModal={() => setShow(false)}
+          />
         </Modal.Body>
       </Modal>
     </div>

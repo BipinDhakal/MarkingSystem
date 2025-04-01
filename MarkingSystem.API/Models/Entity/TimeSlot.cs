@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MarkingSystem.API.Models.Entity
 {
@@ -8,6 +9,7 @@ namespace MarkingSystem.API.Models.Entity
         public int TimeSlotId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        [DefaultValue(false)]
         public bool IsClosed { get; set; }
         public int MaxStudents { get; set; } = 8;
 

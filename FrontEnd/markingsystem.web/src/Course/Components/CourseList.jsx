@@ -49,7 +49,7 @@ function CourseList({ courses, onEdit, refreshCourses }) {
           </tr>
         </thead>
         <tbody>
-          {courses.length > 0 ? (
+          {courses && courses.length > 0 ? (
             courses.map((course, index) => (
               <tr key={course.courseId}>
                 <td>{index + 1}</td>
