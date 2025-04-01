@@ -23,8 +23,8 @@ namespace MarkingSystem.API.Service
         public async Task<IEnumerable<RubricDto>> GetAllRubricAsync()
         {
             var rubric = await _db.Rubrics
-                                   .Where(c => c.DeletedDate == null)
-                                   .Include(c => c.Course)
+                                   .Where(r => r.DeletedDate == null)
+                                   .Include(r => r.Course)
                                    .ToListAsync();
 
             //var rubricList = (from r in _db.Rubrics
@@ -56,6 +56,16 @@ namespace MarkingSystem.API.Service
                                    .Include(c => c.Rubric)
                                    .ToListAsync();
             return _mapper.Map<List<RubricCriteriaDto>>(rubricCriteria);
+        }
+
+        public async Task<IEnumerable<BookingDto>> GetAllBookingAsync()
+        {
+            var booking = await _db.Bookings
+                                   .Where(b => b.DeletedDate == null)
+                                   .Include(b => b.Slot)
+                                   .Include(b => b.Student)
+                                   .ToListAsync();
+            return _mapper.Map<List<BookingDto>>(booking);
         }
     }
 }

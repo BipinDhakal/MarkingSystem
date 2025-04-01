@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MarkingSystem.API.Models.Dto;
 using MarkingSystem.API.Models.Entity;
+using Microsoft.AspNetCore.Identity;
 
 namespace MarkingSystem.API.MapperConfig
 {
@@ -25,7 +26,16 @@ namespace MarkingSystem.API.MapperConfig
                 .ForMember(dest => dest.Rubric, opt => opt.Ignore());
 
                 config.CreateMap<TimeSlot, TimeSlotDto>().ReverseMap();
-                config.CreateMap<Booking, BookingDto>().ReverseMap();
+
+                //config.CreateMap<Booking, BookingDto>().ReverseMap();
+                config.CreateMap<Booking, BookingDto>()
+                .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.Slot.StartTime))
+                .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.Slot.EndTime))
+                .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student.FullName))
+                .ReverseMap()
+                .ForMember(dest => dest.Slot, opt => opt.Ignore())
+                .ForMember(dest => dest.Student, opt => opt.Ignore());
+
                 config.CreateMap<PeerAssignment, PeerAssignmentDto>().ReverseMap();
                 config.CreateMap<PeerMark, PeerMarkDto>().ReverseMap();
                 config.CreateMap<TeacherMark, TeacherMarkDto>().ReverseMap();

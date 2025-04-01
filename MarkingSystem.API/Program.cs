@@ -96,6 +96,7 @@ builder.Services.AddScoped<IGenericService<RubricDto>, GenericService<RubricDto,
 builder.Services.AddScoped<IGenericService<RubricCriteriaDto>, GenericService<RubricCriteriaDto, RubricCriteria>>();
 builder.Services.AddScoped<IListService, ListService>();
 builder.Services.AddScoped<IGenericService<TimeSlotDto>, GenericService<TimeSlotDto, TimeSlot>>();
+builder.Services.AddScoped<IGenericService<BookingDto>, GenericService<BookingDto, Booking>>();
 //Cors
 builder.Services.AddCors(options =>
 {

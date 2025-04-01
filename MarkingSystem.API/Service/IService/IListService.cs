@@ -6,5 +6,7 @@ namespace MarkingSystem.API.Service.IService
     {
         Task<IEnumerable<RubricDto>> GetAllRubricAsync();
         Task<IEnumerable<RubricCriteriaDto>> GetAllRubricCriteriaAsync();
+        Task<IEnumerable<BookingDto>> GetAllBookingAsync();
+
     }
 }
