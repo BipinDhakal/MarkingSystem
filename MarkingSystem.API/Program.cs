@@ -15,6 +15,7 @@ using System.Text;
 using MarkingSystem.API.Utilities;
 using MarkingSystem.API.Models.Dto;
 using Microsoft.Extensions.Options;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,6 +98,15 @@ builder.Services.AddScoped<IGenericService<RubricCriteriaDto>, GenericService<Ru
 builder.Services.AddScoped<IListService, ListService>();
 builder.Services.AddScoped<IGenericService<TimeSlotDto>, GenericService<TimeSlotDto, TimeSlot>>();
 builder.Services.AddScoped<IGenericService<BookingDto>, GenericService<BookingDto, Booking>>();
+
+builder.Services.AddSingleton<CsvHelper.CsvReader>(sp =>
+    new CsvHelper.CsvReader(new StringReader(string.Empty), new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)));
+
+// Add other necessary services, such as file management
+builder.Services.AddScoped<IRubricManagementService, RubricManagementService>();
+
+
+
 //Cors
 builder.Services.AddCors(options =>
 {
@@ -175,6 +185,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseCors();
 

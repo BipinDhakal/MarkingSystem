@@ -41,6 +41,9 @@ namespace MarkingSystem.API.MapperConfig
                 config.CreateMap<TeacherMark, TeacherMarkDto>().ReverseMap();
                 config.CreateMap<FinalMark, FinalMarkDto>().ReverseMap();
                 config.CreateMap<Notification, NotificationDto>().ReverseMap();
+
+                config.CreateMap<Rubric, RubricManagementDto>().ReverseMap();
+                config.CreateMap<RubricCriteria, RubricCriteriaManagementDto>().ReverseMap();
             });
             return mappingConfig;
         }
