@@ -25,7 +25,10 @@ namespace MarkingSystem.API.MapperConfig
                 .ReverseMap()
                 .ForMember(dest => dest.Rubric, opt => opt.Ignore());
 
-                config.CreateMap<TimeSlot, TimeSlotDto>().ReverseMap();
+                //config.CreateMap<TimeSlot, TimeSlotDto>().ReverseMap()
+                config.CreateMap<TimeSlot, TimeSlotDto>()
+                .ReverseMap()
+                .ForMember(dest => dest.Bookings, opt => opt.Ignore());
 
                 //config.CreateMap<Booking, BookingDto>().ReverseMap();
                 config.CreateMap<Booking, BookingDto>()

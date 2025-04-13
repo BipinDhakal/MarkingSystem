@@ -8,7 +8,9 @@ namespace MarkingSystem.API.Models.Dto
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         [DefaultValue(false)]
-        public bool IsClosed { get; set; }
-        public int MaxStudents { get; set; } = 8;
+        public bool IsClosed { get; set; } = false;
+        public int MaxStudents { get; set; } = 2;
+
+        public List<BookingDto> Bookings { get; set; }
     }
 }

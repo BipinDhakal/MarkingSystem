@@ -104,6 +104,7 @@ builder.Services.AddSingleton<CsvHelper.CsvReader>(sp =>
 
 // Add other necessary services, such as file management
 builder.Services.AddScoped<IRubricManagementService, RubricManagementService>();
+builder.Services.AddScoped<ISlotService, SlotService>();
 
 
 

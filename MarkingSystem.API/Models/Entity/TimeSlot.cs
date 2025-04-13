@@ -11,7 +11,7 @@ namespace MarkingSystem.API.Models.Entity
         public DateTime EndTime { get; set; }
         [DefaultValue(false)]
         public bool IsClosed { get; set; }
-        public int MaxStudents { get; set; } = 8;
+        public int MaxStudents { get; set; } = 2;
 
         public ICollection<Booking> Bookings { get; set; }
     }
