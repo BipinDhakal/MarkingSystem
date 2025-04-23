@@ -25,6 +25,13 @@ namespace MarkingSystem.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("list")]
+        public async Task<IActionResult> GetAllRubrics()
+        {
+            var result = await _rubricService.GetAllRubricsAsync();
+            return Ok(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

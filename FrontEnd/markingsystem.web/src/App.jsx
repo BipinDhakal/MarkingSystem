@@ -20,6 +20,7 @@ import NavMenu from "./AdminDashboard/NavMenu";
 import ChangePassword from "./Authentication/ChangePassword";
 import DateTimeSlot from "./TimeSlot/Components/dateTimeSlot";
 import SlotBooking from "./SlotManagement/Components/SlotBooking";
+import RubricManagement from './RubricManagement/Components/RubricManagement';
 
 
 function PrivateRoute({ element }) {
@@ -57,6 +58,7 @@ const Layout = () => {
           <Route path="/rubriccriteria" element={<PrivateRoute element={<RubricCriteria />} />} />
           <Route path="/timeslot" element={<PrivateRoute element={<DateTimeSlot/>}/>} />
           <Route path="/slotbooking" element={<PrivateRoute element={<SlotBooking />} />} />
+          <Route path="/rubricmanagement" element={<PrivateRoute element={<RubricManagement />} />} />
         </Routes>
       </div>
     </div>

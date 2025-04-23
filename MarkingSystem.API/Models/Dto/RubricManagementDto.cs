@@ -24,8 +24,8 @@ namespace MarkingSystem.API.Models.Dto
     public class UploadRubricFileDto
     {
         public IFormFile File { get; set; }
-        public int CourseId { get; set; }
-        public string RubricName { get; set; }
+        //public int? CourseId { get; set; }
+        //public string? RubricName { get; set; }
     }
 
     public class RubricCsvRow

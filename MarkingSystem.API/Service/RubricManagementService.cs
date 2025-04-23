@@ -28,6 +28,15 @@ namespace MarkingSystem.API.Service
             _env = env;
         }
 
+        public async Task<List<RubricManagementDto>> GetAllRubricsAsync()
+        {
+            var rubrics = await _db.Rubrics
+                .Include(r => r.Criteria)
+                .ToListAsync();
+
+            return _mapper.Map<List<RubricManagementDto>>(rubrics);
+        }
+
         public async Task DeleteRubricAsync(int rubricId)
         {
             var rubric = await _db.Rubrics.FindAsync(rubricId);

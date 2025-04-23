@@ -24,15 +24,14 @@ function SlotBookingForm({ selectedSlot, onSave }) {
     }
   );
 
-    const [students, setStudents] = useState([]);
-  
+  const [students, setStudents] = useState([]);
+
   useEffect(() => {
     async function fetchStudents() {
       try {
         const data = await getStudents();
-        setStudents(data); 
+        setStudents(data);
       } catch (err) {
-        //console.error("Error fetching students:", err);
         toast.error("Failed to load students");
       }
     }
@@ -57,7 +56,7 @@ function SlotBookingForm({ selectedSlot, onSave }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(slot);  // This calls the passed onSave function
+    onSave(slot);
   };
 
   return (
@@ -84,87 +83,22 @@ function SlotBookingForm({ selectedSlot, onSave }) {
         />
       </Form.Group>
 
-      {/* <Form.Group className="mb-3">
-        <Form.Label>Max Students</Form.Label>
-        <Form.Control
-          type="number"
-          name="maxStudents"
-          value={slot.maxStudents}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group> */}
-
-      {/* <Form.Group className="mb-3">
-        <Form.Check
-          type="checkbox"
-          label="Is Closed"
-          name="isClosed"
-          checked={slot.isClosed}
-          onChange={handleChange}
-        />
-      </Form.Group> */}
-
-      {/* <hr />
-      <h5>Booking Info</h5> */}
-
-      {/* <Form.Group className="mb-3">
-        <Form.Label>Student ID</Form.Label>
-        <Form.Control
-          type="text"
+      <Form.Group className="mb-3" controlId="studentDropdown">
+        <Form.Label>Select Student</Form.Label>
+        <Form.Select
           name="studentId"
           value={slot.bookings[0]?.studentId || ""}
           onChange={handleBookingChange}
-        />
-      </Form.Group> */}
-
-<Form.Group className="mb-3" controlId="studentDropdown">
-        <Form.Label>Select Student</Form.Label>
-        <Form.Select 
-          name="studentId" 
-          value={slot.bookings[0]?.studentId || ""} 
-          onChange={handleBookingChange} 
           required
         >
           <option value="">-- Select a Student --</option>
           {students.map((student) => (
-            <option key={student.value} value={student.value}>
-              {student.text}
+            <option key={student.id} value={student.id}>
+              {student.name}
             </option>
           ))}
         </Form.Select>
       </Form.Group>
-
-
-      {/* <Form.Group className="mb-3">
-        <Form.Label>Student Name</Form.Label>
-        <Form.Control
-          type="text"
-          name="studentName"
-          value={slot.bookings[0]?.studentName || ""}
-          onChange={handleBookingChange}
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Booking Start Time</Form.Label>
-        <Form.Control
-          type="text"
-          name="startTime"
-          value={slot.bookings[0]?.startTime || ""}
-          onChange={handleBookingChange}
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Booking End Time</Form.Label>
-        <Form.Control
-          type="text"
-          name="endTime"
-          value={slot.bookings[0]?.endTime || ""}
-          onChange={handleBookingChange}
-        />
-      </Form.Group> */}
 
       <Button type="submit">Save Slot</Button>
     </Form>
