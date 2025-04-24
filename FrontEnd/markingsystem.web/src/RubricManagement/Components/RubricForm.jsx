@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import rubricService from '../Services/rubricService';
+import { toast } from "react-toastify";
 
 const RubricForm = ({ rubric, onUpdated }) => {
   const [rubricName, setRubricName] = useState('');
@@ -23,13 +24,27 @@ const RubricForm = ({ rubric, onUpdated }) => {
       ...rubric,
       rubricName,
       courseId,
+      criteria: [
+        {
+          description,
+          maxScore
+        }
+      ]
     };
 
+    // try {
+    //   await rubricService.updateRubric(updatedRubric.rubricId, updatedRubric);
+    //   if (onUpdated) onUpdated();
+    // } catch (error) {
+    //   console.error('Error updating rubric:', error);
+    // }
+
     try {
-      await rubricService.updateRubric(updatedRubric);
+      await rubricService.updateRubric(updatedRubric.rubricId, updatedRubric);
       if (onUpdated) onUpdated();
+      toast.success('update successful!');
     } catch (error) {
-      console.error('Error updating rubric:', error);
+      toast.error('update failed.');
     }
   };
 
@@ -75,8 +90,8 @@ const RubricForm = ({ rubric, onUpdated }) => {
         />
       </Form.Group>
 
-      <Button variant="primary" type="submit">
-        Save Changes
+      <Button variant="success" type="submit">
+      Update
       </Button>
     </Form>
   );

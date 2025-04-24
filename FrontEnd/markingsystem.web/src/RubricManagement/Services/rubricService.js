@@ -31,6 +31,8 @@ const rubricService = {
 
  
   updateRubric: async (id, rubricDto) => {
+    console.log(rubricDto);
+    console.log(rubricDto.rubricId);
     const response = await axios.put(`${API_BASE_URL}/${id}`, rubricDto, getAuthHeader());
     return response.data;
   },

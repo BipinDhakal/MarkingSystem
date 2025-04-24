@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import rubricService from '../Services/rubricService';
+import { toast } from "react-toastify";
 
 const RubricUpload = ({ onUpload }) => {
   const [file, setFile] = useState(null);
@@ -14,11 +15,10 @@ const RubricUpload = ({ onUpload }) => {
     //onUpload();
     try {
         await rubricService.uploadRubric(file);
-        alert('Upload successful!');
+        toast.success('Upload successful!');
         onUpload();
       } catch (error) {
-        console.error('Upload failed:', error);
-        alert('Upload failed.');
+        toast.error('Upload failed.');
       }
   
   };
