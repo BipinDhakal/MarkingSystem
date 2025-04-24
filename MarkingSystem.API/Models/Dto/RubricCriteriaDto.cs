@@ -7,6 +7,8 @@
         public int MaxScore { get; set; }
         public int RubricId { get; set; }
 
+        public string Area { get; set; }
+
         public string? RubricName { get; set; }
     }
 }

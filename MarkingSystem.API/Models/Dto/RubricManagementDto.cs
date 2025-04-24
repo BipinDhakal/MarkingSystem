@@ -34,6 +34,7 @@ namespace MarkingSystem.API.Models.Dto
         public int CourseId { get; set; }
         public string CriteriaDescription { get; set; }
         public int MaxScore { get; set; }
+        public string Area { get; set; }
 
         // Optional: Uncomment if you're using "Order" from the CSV
         // public int Order { get; set; }

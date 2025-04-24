@@ -10,6 +10,8 @@ namespace MarkingSystem.API.Models.Entity
         public int MaxScore { get; set; }
         public int RubricId { get; set; }
 
+        public string Area { get; set; }
+
         public Rubric Rubric { get; set; }
     }
 }

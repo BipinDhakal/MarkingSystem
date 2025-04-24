@@ -1,42 +1,90 @@
 
+// import React from 'react';
+// import { Table, Modal, Button } from "react-bootstrap";
+
+// const RubricList = ({ rubrics, onEdit, onDelete }) => {
+//   return (
+//     <div className="table-responsive">
+//     <Table striped bordered hover className="w-100">
+//       <thead>
+//         <tr>
+//           <th>Rubric Name</th>
+//           {/* <th>Course ID</th> */}
+//           <th>Criteria</th>
+//           <th>Area</th>
+//           <th>Score</th>
+//           <th>Actions</th>
+//         </tr>
+//       </thead>
+//       <tbody>
+//         {rubrics.map((rubric) => (
+//           <tr key={rubric.rubricId}>
+//             <td>{rubric.rubricName}</td>
+//             {/* <td>{rubric.courseId}</td> */}
+//             <td>{rubric.criteria[0]?.description}</td>
+//             <td>{rubric.criteria[0]?.area}</td>
+//             <td>{rubric.criteria[0]?.maxScore}</td>
+//             <td>
+//               <button onClick={() => onEdit(rubric)} className="btn btn-warning btn-sm me-2">Edit</button>
+//               <button onClick={() => onDelete(rubric.rubricId)} className="btn btn-danger btn-sm">Delete</button>
+//             </td>
+//           </tr>
+//         ))}
+//       </tbody>
+//     </Table>
+//     </div>
+//   );
+// };
+
+// export default RubricList;
+
+
+
+
 import React from 'react';
-import { Table, Modal, Button } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 
 const RubricList = ({ rubrics, onEdit, onDelete }) => {
   return (
     <div className="table-responsive">
-    <Table striped bordered hover className="w-100">
-      <thead>
-        <tr>
-          <th>Rubric Name</th>
-          <th>Course ID</th>
-          <th>Criteria</th>
-          <th>Score</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rubrics.map((rubric) => (
-          <tr key={rubric.rubricId}>
-            <td>{rubric.rubricName}</td>
-            <td>{rubric.courseId}</td>
-            <td>{rubric.criteria[0]?.description}</td>
-            <td>{rubric.criteria[0]?.maxScore}</td>
-            <td>
-              <button onClick={() => onEdit(rubric)} className="btn btn-warning btn-sm me-2">Edit</button>
-              <button onClick={() => onDelete(rubric.rubricId)} className="btn btn-danger btn-sm">Delete</button>
-            </td>
+      <Table striped bordered hover className="w-100">
+        <thead>
+          <tr>
+            <th>Rubric Name</th>
+            {/* <th>Course ID</th> */}
+            <th>Criteria</th>
+            <th>Area</th>
+            <th>Score</th>
+            <th>Actions</th>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {rubrics.map((rubric) =>
+            rubric.criteria.map((criterion, index) => (
+              <tr key={`${rubric.rubricId}-${index}`}>
+                {/* <td>{index === 0 ? rubric.rubricName : ''}</td>  */}
+                <td>{rubric.rubricName}</td>
+                <td>{criterion.description}</td>
+                <td>{criterion.area}</td>
+                <td>{criterion.maxScore}</td>
+                <td>
+                  {/* {index === 0 && (
+                    <> */}
+                      <button onClick={() => onEdit(rubric)} className="btn btn-warning btn-sm me-2">Edit</button>
+                      <button onClick={() => onDelete(rubric.rubricId)} className="btn btn-danger btn-sm">Delete</button>
+                    {/* </>
+                  )} */}
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </Table>
     </div>
   );
 };
 
 export default RubricList;
-
-
 
 
 
@@ -58,34 +106,34 @@ export default RubricList;
 
 // const RubricList = ({ rubrics, onEdit, onDelete }) => {
 
-//   const [showModal, setShowModal] = useState(false);
-//     const [rubricToDelete, setRubricToDelete] = useState(null);
+  // const [showModal, setShowModal] = useState(false);
+  //   const [rubricToDelete, setRubricToDelete] = useState(null);
   
-//     const handleDelete = (id) => {
-//       setRubricToDelete(id);
-//       setShowModal(true);  
-//     };
+  //   const handleDelete = (id) => {
+  //     setRubricToDelete(id);
+  //     setShowModal(true);  
+  //   };
   
-//     const confirmDelete = async () => {
-//       if (rubricToDelete) {
-//         try {
-//           //await deleteRubric(rubricToDelete);
-//           await rubricService.deleteRubric(rubricToDelete);
-//           toast.success("Rubric deleted successfully");
-//           //refreshRubrics();
-//         } catch (err) {
-//           toast.error("Error deleting rubric");
-//         } finally {
-//           setShowModal(false); 
-//           setRubricToDelete(null);
-//         }
-//       }
-//     };
+  //   const confirmDelete = async () => {
+  //     if (rubricToDelete) {
+  //       try {
+  //         //await deleteRubric(rubricToDelete);
+  //         await rubricService.deleteRubric(rubricToDelete);
+  //         toast.success("Rubric deleted successfully");
+  //         //refreshRubrics();
+  //       } catch (err) {
+  //         toast.error("Error deleting rubric");
+  //       } finally {
+  //         setShowModal(false); 
+  //         setRubricToDelete(null);
+  //       }
+  //     }
+  //   };
   
-//     const handleCancel = () => {
-//       setShowModal(false); 
-//       setRubricToDelete(null);
-//     };
+  //   const handleCancel = () => {
+  //     setShowModal(false); 
+  //     setRubricToDelete(null);
+  //   };
 
 //   return (
 //     <div className="table-responsive">

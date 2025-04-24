@@ -109,6 +109,7 @@ namespace MarkingSystem.API.Service
                         Description = row.CriteriaDescription,
                         MaxScore = row.MaxScore,
                         //Order = row.Order  
+                        Area= row.Area
                     };
                     rubricCriteria.CreatedBy = loginUserId;
                     rubricCriteria.CreatedDate = DateTime.Now;
@@ -132,8 +133,78 @@ namespace MarkingSystem.API.Service
         }
 
 
-
         private async Task<List<RubricManagementDto>> ProcessExcelFile(UploadRubricFileDto dto)
+        {
+            int loginUserId = await _userContextHelper.GetCurrentUserIdAsync();
+
+            using (var package = new ExcelPackage(dto.File.OpenReadStream()))
+            {
+                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                var worksheet = package.Workbook.Worksheets[0];  // Assuming data is in the first sheet
+                var rowCount = worksheet.Dimension.Rows;
+
+                var rubricManagement = new List<Rubric>();
+                var rubricCache = new Dictionary<string, Rubric>(); // Cache for RubricName+CourseId
+
+                for (int row = 2; row <= rowCount; row++)  // Skip header row
+                {
+                    var rubricName = worksheet.Cells[row, 1].Text.Trim();
+                    var courseId = int.Parse(worksheet.Cells[row, 2].Text);
+                    var description = worksheet.Cells[row, 3].Text.Trim();
+                    var area = worksheet.Cells[row, 4].Text.Trim();
+                    var maxScore = int.Parse(worksheet.Cells[row, 5].Text);
+
+                    var key = $"{rubricName}_{courseId}";
+
+                    Rubric rubric;
+
+                    if (!rubricCache.TryGetValue(key, out rubric))
+                    {
+                        // Check database if this Rubric already exists
+                        rubric = await _db.Rubrics
+                                          .Include(r => r.Criteria)
+                                          .FirstOrDefaultAsync(r => r.RubricName == rubricName && r.CourseId == courseId);
+
+                        if (rubric == null)
+                        {
+                            rubric = new Rubric
+                            {
+                                RubricName = rubricName,
+                                CourseId = courseId,
+                                Criteria = new List<RubricCriteria>(),
+                                CreatedBy = loginUserId,
+                                CreatedDate = DateTime.Now
+                            };
+
+                            _db.Rubrics.Add(rubric);
+                            await _db.SaveChangesAsync(); // Save to generate RubricId
+                        }
+
+                        rubricCache[key] = rubric; // Cache it
+                        rubricManagement.Add(rubric); // Add to final return list only once
+                    }
+
+                    // Create and attach RubricCriteria
+                    var rubricCriteria = new RubricCriteria
+                    {
+                        Description = description,
+                        Area = area,
+                        MaxScore = maxScore,
+                        RubricId = rubric.RubricId,
+                        CreatedBy = loginUserId,
+                        CreatedDate = DateTime.Now
+                    };
+
+                    _db.RubricCriteria.Add(rubricCriteria); // Assuming separate DbSet for RubricCriteria
+                    await _db.SaveChangesAsync();
+                }
+
+                return _mapper.Map<List<RubricManagementDto>>(rubricManagement);
+            }
+        }
+
+
+        private async Task<List<RubricManagementDto>> ProcessExcelFile1(UploadRubricFileDto dto)
         {
             int loginUserId = await _userContextHelper.GetCurrentUserIdAsync();
             using (var package = new ExcelPackage(dto.File.OpenReadStream()))
@@ -150,8 +221,9 @@ namespace MarkingSystem.API.Service
                     var rubricName = worksheet.Cells[row, 1].Text;  // Assuming RubricName is in column 1
                     var courseId = int.Parse(worksheet.Cells[row, 2].Text);  // Assuming CourseId is in column 2
                     var description = worksheet.Cells[row, 3].Text;  // Assuming Description is in column 3
-                    var maxScore = int.Parse(worksheet.Cells[row, 4].Text);  // Assuming MaxScore is in column 4
-                    var order = int.Parse(worksheet.Cells[row, 5].Text);  // Assuming Order is in column 5
+                    var area = worksheet.Cells[row, 4].Text;  // Assuming Area is in column 3
+                    var maxScore = int.Parse(worksheet.Cells[row, 5].Text);  // Assuming MaxScore is in column 5
+                    //var order = int.Parse(worksheet.Cells[row, 6].Text);  // Assuming Order is in column 6
 
                     // Create the RubricCriteria object for the current row
                     var rubricCriteria = new RubricCriteria
@@ -159,6 +231,7 @@ namespace MarkingSystem.API.Service
                         Description = description,
                         MaxScore = maxScore,
                         //Order = order
+                        Area=area
                     };
                     rubricCriteria.CreatedBy = loginUserId;
                     rubricCriteria.CreatedDate = DateTime.Now;
