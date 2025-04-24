@@ -46,7 +46,7 @@ const rubricService = {
 
 getAllRubrics: async () => {
   const response = await axios.get(`${API_BASE_URL}/list`, getAuthHeader());
-  //console.log(response.data);
+  console.log(response.data);
   return response.data;
 },
 

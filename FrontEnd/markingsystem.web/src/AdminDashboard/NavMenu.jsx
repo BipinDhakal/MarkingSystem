@@ -60,7 +60,11 @@ const NavMenu = () => {
           <TimerIcon size={18} /> SlotBooking
         </Button>
         <Button variant="link" className="text-white d-flex align-items-center gap-2" onClick={() => navigate("/rubricmanagement")}>
-          <TimerIcon size={18} /> Rubric Management
+          <List size={18} /> Rubric Management
+        </Button>
+
+        <Button variant="link" className="text-white d-flex align-items-center gap-2" onClick={() => navigate("/teacherstudentmarking")}>
+          <ClipboardList size={18} /> Marking
         </Button>
 
         <Button

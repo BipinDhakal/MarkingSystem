@@ -141,6 +141,24 @@ button:focus-visible {
   background-color: #4F46E5; 
 }
 
+
+.rubric-table-wrapper {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.rubric-table {
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+td, th {
+  vertical-align: top;
+}
+
+
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
