@@ -31,7 +31,7 @@ namespace MarkingSystem.API.Service
 
         public async Task<IEnumerable<UtilityDto>> GetStudents()
         {
-            var teachers = await (from i in _db.Users
+            var students = await (from i in _db.Users
                                   join j in _db.UserRoles on i.Id equals j.UserId
                                   join k in _db.Roles on j.RoleId equals k.Id
                                   where k.Name == "Student"
@@ -40,7 +40,7 @@ namespace MarkingSystem.API.Service
                                       Text = i.FullName,
                                       Value = i.Id
                                   }).ToListAsync();
-            return _mapper.Map<List<UtilityDto>>(teachers);
+            return _mapper.Map<List<UtilityDto>>(students);
         }
     }
 }

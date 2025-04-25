@@ -30,6 +30,7 @@ function SlotBookingForm({ selectedSlot, onSave }) {
     async function fetchStudents() {
       try {
         const data = await getStudents();
+        console.log(data);
         setStudents(data);
       } catch (err) {
         toast.error("Failed to load students");
@@ -93,8 +94,8 @@ function SlotBookingForm({ selectedSlot, onSave }) {
         >
           <option value="">-- Select a Student --</option>
           {students.map((student) => (
-            <option key={student.id} value={student.id}>
-              {student.name}
+            <option key={student.value} value={student.value}>
+              {student.text}
             </option>
           ))}
         </Form.Select>

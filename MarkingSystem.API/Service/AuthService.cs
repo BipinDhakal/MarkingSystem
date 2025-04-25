@@ -90,6 +90,7 @@ namespace MarkingSystem.API.Service
             };
             try
             {
+                user.Role = registrationRequestDto.Role;
                 var result = await _userManager.CreateAsync(user, registrationRequestDto.Password);
                 if (result.Succeeded)
                 {

@@ -135,72 +135,79 @@ namespace MarkingSystem.API.Service
 
         private async Task<List<RubricManagementDto>> ProcessExcelFile(UploadRubricFileDto dto)
         {
-            int loginUserId = await _userContextHelper.GetCurrentUserIdAsync();
-
-            using (var package = new ExcelPackage(dto.File.OpenReadStream()))
+            try
             {
-                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-                var worksheet = package.Workbook.Worksheets[0];  // Assuming data is in the first sheet
-                var rowCount = worksheet.Dimension.Rows;
+                int loginUserId = await _userContextHelper.GetCurrentUserIdAsync();
 
-                var rubricManagement = new List<Rubric>();
-                var rubricCache = new Dictionary<string, Rubric>(); // Cache for RubricName+CourseId
-
-                for (int row = 2; row <= rowCount; row++)  // Skip header row
+                using (var package = new ExcelPackage(dto.File.OpenReadStream()))
                 {
-                    var rubricName = worksheet.Cells[row, 1].Text.Trim();
-                    var courseId = int.Parse(worksheet.Cells[row, 2].Text);
-                    var description = worksheet.Cells[row, 3].Text.Trim();
-                    var area = worksheet.Cells[row, 4].Text.Trim();
-                    var maxScore = int.Parse(worksheet.Cells[row, 5].Text);
+                    ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                    var worksheet = package.Workbook.Worksheets[0];  // Assuming data is in the first sheet
+                    var rowCount = worksheet.Dimension.Rows;
 
-                    var key = $"{rubricName}_{courseId}";
+                    var rubricManagement = new List<Rubric>();
+                    var rubricCache = new Dictionary<string, Rubric>(); // Cache for RubricName+CourseId
 
-                    Rubric rubric;
-
-                    if (!rubricCache.TryGetValue(key, out rubric))
+                    for (int row = 2; row <= rowCount; row++)  // Skip header row
                     {
-                        // Check database if this Rubric already exists
-                        rubric = await _db.Rubrics
-                                          .Include(r => r.Criteria)
-                                          .FirstOrDefaultAsync(r => r.RubricName == rubricName && r.CourseId == courseId);
+                        var rubricName = worksheet.Cells[row, 1].Text.Trim();
+                        var courseId = int.Parse(worksheet.Cells[row, 2].Text);
+                        var description = worksheet.Cells[row, 3].Text.Trim();
+                        var area = worksheet.Cells[row, 4].Text.Trim();
+                        var maxScore = int.Parse(worksheet.Cells[row, 5].Text);
 
-                        if (rubric == null)
+                        var key = $"{rubricName}_{courseId}";
+
+                        Rubric rubric;
+
+                        if (!rubricCache.TryGetValue(key, out rubric))
                         {
-                            rubric = new Rubric
-                            {
-                                RubricName = rubricName,
-                                CourseId = courseId,
-                                Criteria = new List<RubricCriteria>(),
-                                CreatedBy = loginUserId,
-                                CreatedDate = DateTime.Now
-                            };
+                            // Check database if this Rubric already exists
+                            rubric = await _db.Rubrics
+                                              .Include(r => r.Criteria)
+                                              .FirstOrDefaultAsync(r => r.RubricName == rubricName && r.CourseId == courseId);
 
-                            _db.Rubrics.Add(rubric);
-                            await _db.SaveChangesAsync(); // Save to generate RubricId
+                            if (rubric == null)
+                            {
+                                rubric = new Rubric
+                                {
+                                    RubricName = rubricName,
+                                    CourseId = courseId,
+                                    Criteria = new List<RubricCriteria>(),
+                                    CreatedBy = loginUserId,
+                                    CreatedDate = DateTime.Now
+                                };
+
+                                _db.Rubrics.Add(rubric);
+                                await _db.SaveChangesAsync(); // Save to generate RubricId
+                            }
+
+                            rubricCache[key] = rubric; // Cache it
+                            rubricManagement.Add(rubric); // Add to final return list only once
                         }
 
-                        rubricCache[key] = rubric; // Cache it
-                        rubricManagement.Add(rubric); // Add to final return list only once
+                        // Create and attach RubricCriteria
+                        var rubricCriteria = new RubricCriteria
+                        {
+                            Description = description,
+                            Area = area,
+                            MaxScore = maxScore,
+                            RubricId = rubric.RubricId,
+                            CreatedBy = loginUserId,
+                            CreatedDate = DateTime.Now
+                        };
+
+                        _db.RubricCriteria.Add(rubricCriteria); // Assuming separate DbSet for RubricCriteria
+                        await _db.SaveChangesAsync();
                     }
 
-                    // Create and attach RubricCriteria
-                    var rubricCriteria = new RubricCriteria
-                    {
-                        Description = description,
-                        Area = area,
-                        MaxScore = maxScore,
-                        RubricId = rubric.RubricId,
-                        CreatedBy = loginUserId,
-                        CreatedDate = DateTime.Now
-                    };
-
-                    _db.RubricCriteria.Add(rubricCriteria); // Assuming separate DbSet for RubricCriteria
-                    await _db.SaveChangesAsync();
+                    return _mapper.Map<List<RubricManagementDto>>(rubricManagement);
                 }
-
-                return _mapper.Map<List<RubricManagementDto>>(rubricManagement);
             }
+            catch (Exception ex) { 
+                
+            }
+            return new List<RubricManagementDto>();
         }
 
 
