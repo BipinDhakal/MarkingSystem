@@ -70,7 +70,7 @@ function Dashboard() {
         <h2 className="mt-4">Welcome to the Dashboard!</h2>
 
 {/* Cards and Graph */}
-        <div className="row mt-4">
+        {/* <div className="row mt-4">
           <div className="col-md-4 mb-4">
             <div className="card p-4">
               <h5 className="card-title">Total Course</h5>
@@ -89,10 +89,10 @@ function Dashboard() {
               <p className="h4 font-weight-bold">8</p>
             </div>
           </div>
-        </div>
+        </div> */}
 
 {/* Bar Chart */}
-        <div className="bg-white p-4 rounded shadow mt-4">
+        {/* <div className="bg-white p-4 rounded shadow mt-4">
           <h5 className="mb-4">Marking By Course</h5>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={data}>
@@ -102,7 +102,16 @@ function Dashboard() {
               <Bar dataKey="users" fill="#4F46E5" />
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        </div> */}
+
+
+<img 
+  src="/Images/AucklandInstitute.jpg" 
+  alt="Dashboard" 
+  className="img-fluid my-3" 
+  style={{ maxWidth: "100%" }}
+/>
+
       </div>
     </div>
   );
