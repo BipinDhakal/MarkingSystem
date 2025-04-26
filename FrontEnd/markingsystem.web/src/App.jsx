@@ -22,6 +22,7 @@ import DateTimeSlot from "./TimeSlot/Components/dateTimeSlot";
 import SlotBooking from "./SlotManagement/Components/SlotBooking";
 import RubricManagement from './RubricManagement/Components/RubricManagement';
 import TeacherStudentMarking from "./TeacherStudentMarking/Components/TeacherStudentMarking";
+import StudentGroupedMarkingTable from "./TeacherStudentMarking/Components/MarkingDetails";
 
 
 function PrivateRoute({ element }) {
@@ -61,6 +62,7 @@ const Layout = () => {
           <Route path="/slotbooking" element={<PrivateRoute element={<SlotBooking />} />} />
           <Route path="/rubricmanagement" element={<PrivateRoute element={<RubricManagement />} />} />
           <Route path="/teacherstudentmarking" element={<PrivateRoute element={<TeacherStudentMarking />} />} />
+          <Route path="/markingdetails" element={<PrivateRoute element={<StudentGroupedMarkingTable />} />} />
         </Routes>
       </div>
     </div>

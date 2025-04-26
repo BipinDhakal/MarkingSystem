@@ -21,6 +21,8 @@ namespace MarkingSystem.API.DataBaseContext
         public DbSet<TeacherMark> TeacherMarks { get; set; }
         public DbSet<FinalMark> FinalMarks { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<StudentMarking> StudentMarkings { get; set; }
+        public DbSet<StudentMarkingDetail> StudentMarkingDetails { get; set; }
 
 
 
@@ -54,6 +56,12 @@ namespace MarkingSystem.API.DataBaseContext
         .WithMany()  // RubricCriteria does not have navigation to PeerMarks
         .HasForeignKey(pm => pm.RubricCriteriaId)  // Foreign key in PeerMarks
         .OnDelete(DeleteBehavior.Restrict);  // Prevent cascading deletes
+
+            modelBuilder.Entity<StudentMarkingDetail>()
+        .HasOne(d => d.StudentMarking)
+        .WithMany(m => m.FeedbackDetails)
+        .HasForeignKey(d => d.StudentMarkingId)
+        .OnDelete(DeleteBehavior.Cascade);
 
         }
 

@@ -100,6 +100,10 @@ const NavMenu = () => {
           <ClipboardList size={18} /> Marking
         </Button>
 
+        <Button variant="link" className="text-white d-flex align-items-center gap-2" onClick={() => navigate("/markingdetails")}>
+          <ClipboardList size={18} /> Marking Details
+        </Button>
+
         <Button
           variant="link"
           className="text-white d-flex align-items-center gap-2"

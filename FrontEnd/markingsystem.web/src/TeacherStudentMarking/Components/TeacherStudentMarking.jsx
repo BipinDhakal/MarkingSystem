@@ -85,13 +85,21 @@ const TeacherStudentMarking = () => {
       return;
     }
 
-    const payload = Object.entries(feedbackInputs).map(([rubricName, score]) => ({
-      rubricName,
-      score
-    }));
+    // const payload = Object.entries(feedbackInputs).map(([rubricName, score]) => ({
+    //   rubricName,
+    //   score
+    // }));
+    const payload = {
+      studentId: marks.studentId,
+      totalMarks: marks.totalMarks,
+      rubricScores: Object.entries(feedbackInputs).map(([rubricName, score]) => ({
+        rubricName,
+        score
+      }))
+    };
 
     try {
-      await teacherStudentMarkingService.submitMarks(payload);
+      await teacherStudentMarkingService.submitStudentMarking(payload);
       alert("Marks submitted successfully!");
     } catch (error) {
       console.error("Submission failed:", error);

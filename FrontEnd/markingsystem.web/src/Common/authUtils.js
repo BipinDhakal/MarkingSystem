@@ -7,8 +7,8 @@ export const getCurrentUserRole = () => {
 
   try {
     const decoded = jwtDecode(token);
-    // console.log(`$Decode-${JSON.stringify(decoded)}`);
-    // console.log(`Role: ${decoded.role}`);
+     console.log(`$Decode-${JSON.stringify(decoded)}`);
+     console.log(`Role: ${decoded.role}`);
     return decoded.role || decoded.roles || decoded?.user?.role || null;
   } catch (err) {
     console.error("Token decode error:", err);

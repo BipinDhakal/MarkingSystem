@@ -3,11 +3,15 @@ import axios from "axios";
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from "react-router-dom";
 
+
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUserName] = useState("");
+  const [fullname, setFullName] = useState("");
   const [role, setRole] = useState("");
+
+  const navigate = useNavigate();
 
   async function userRegister(event) {
 
@@ -17,12 +21,14 @@ function Register() {
         email: email,
         password: password,
         username: username,
+        fullname: fullname,
         role: role
       });
       alert("User Registered Successfully");
       setEmail("");
       setPassword("");
       setUserName("");
+      setFullName("");
       setRole("");
       navigate("/login");
     } catch (err) {
@@ -56,6 +62,18 @@ function Register() {
               value={email}
               onChange={(event) => {
                 setEmail(event.target.value);
+              }}
+            />
+          </div>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="fullname"
+              value={fullname}
+              onChange={(event) => {
+                setFullName(event.target.value);
               }}
             />
           </div>
